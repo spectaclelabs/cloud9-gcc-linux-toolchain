@@ -1,0 +1,14 @@
+#! /bin/sh
+# TODO: parse & pass-through sudo options from $@
+sudo_options="-E"
+
+for arg in "$@"
+do
+   case "$arg" in
+    *\'*)
+      arg=`echo "$arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+   esac
+   cmd_options="$cmd_options '$arg'" 
+done
+
+exec /usr/bin/sudo $sudo_options scl enable devtoolset-1.1 "$cmd_options"
